@@ -8,10 +8,6 @@ private val client = KMongo.createClient().coroutine
 private val database = client.getDatabase("PostsDatabase")
 private val posts = database.getCollection<Post>()
 
-suspend fun getPosts(): List<Post> {
-    return posts.find().toList()
-}
-
 suspend fun savePost(post: Post): Boolean{
     val postExists = posts.findOneById(post.id) != null
     return if(postExists){
@@ -19,4 +15,9 @@ suspend fun savePost(post: Post): Boolean{
     } else {
         posts.insertOne(post).wasAcknowledged()
     }
+}
+
+suspend fun getPosts(): List<Post> {
+
+    return posts.find().toList()
 }
