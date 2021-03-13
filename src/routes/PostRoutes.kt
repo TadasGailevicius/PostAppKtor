@@ -4,9 +4,9 @@ import com.example.data.*
 import com.example.data.collections.Post
 import io.ktor.application.call
 import io.ktor.features.ContentTransformationException
-import io.ktor.http.*
-import io.ktor.http.HttpStatusCode.Companion.OK
+import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.Conflict
+import io.ktor.http.HttpStatusCode.Companion.OK
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Route
@@ -28,7 +28,7 @@ fun Route.postRoutes() {
             val post = try {
                 call.receive<Post>()
             } catch (e: ContentTransformationException) {
-                call.respond(HttpStatusCode.BadRequest)
+                call.respond(BadRequest)
                 return@post
             }
             if (savePost(post)) {
