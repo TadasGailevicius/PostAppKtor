@@ -8,6 +8,5 @@ data class Post (
     @BsonId
     val id: String = ObjectId().toString(),
     val title: String,
-    val body: String,
-
-    )
+    val body: String
+)
