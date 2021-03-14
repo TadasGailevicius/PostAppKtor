@@ -2,7 +2,9 @@ package com.example.routes
 
 import com.example.data.*
 import com.example.data.collections.Post
+import com.example.data.requests.DeletePostRequest
 import io.ktor.application.call
+import io.ktor.auth.*
 import io.ktor.features.ContentTransformationException
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.Conflict
@@ -20,6 +22,23 @@ fun Route.postRoutes() {
             val posts = getPosts()
             call.respond(OK, posts)
         }
+    }
+
+    route("/deletePost") {
+            post {
+                val request = try {
+                    call.receive<DeletePostRequest>()
+                } catch (e: ContentTransformationException) {
+                    call.respond(BadRequest)
+                    return@post
+                }
+
+                if(deletePost(request.id)) {
+                    call.respond(OK)
+                } else {
+                    call.respond(Conflict)
+                }
+            }
     }
 
 

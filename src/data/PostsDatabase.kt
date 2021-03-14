@@ -2,7 +2,9 @@ package com.example.data
 
 import com.example.data.collections.Post
 import org.litote.kmongo.coroutine.coroutine
+import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
+import org.litote.kmongo.setValue
 
 private val client = KMongo.createClient().coroutine
 private val database = client.getDatabase("PostsDatabase")
@@ -20,4 +22,12 @@ suspend fun savePost(post: Post): Boolean{
 suspend fun getPosts(): List<Post> {
 
     return posts.find().toList()
+}
+
+suspend fun deletePost(noteId: String): Boolean {
+    val post = posts.findOne(Post::id eq noteId)
+    post?.let { post ->
+            return posts.deleteOneById(post.id).wasAcknowledged()
+    } ?: return false
+
 }
