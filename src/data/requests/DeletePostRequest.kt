@@ -1,5 +1,5 @@
 package com.example.data.requests
 
 data class DeletePostRequest (
-    val id: String
+    val id: Int
 )
