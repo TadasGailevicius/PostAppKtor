@@ -24,7 +24,7 @@ suspend fun getPosts(): List<Post> {
     return posts.find().toList()
 }
 
-suspend fun deletePost(noteId: String): Boolean {
+suspend fun deletePost(noteId: Int): Boolean {
     val post = posts.findOne(Post::id eq noteId)
     post?.let { post ->
             return posts.deleteOneById(post.id).wasAcknowledged()
